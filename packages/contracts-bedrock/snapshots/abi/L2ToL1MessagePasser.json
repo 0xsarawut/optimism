@@ -152,10 +152,5 @@
     ],
     "name": "WithdrawerBalanceBurnt",
     "type": "event"
-  },
-  {
-    "inputs": [],
-    "name": "L2ToL1MessagePasser_NotAllowedOnCGTMode",
-    "type": "error"
   }
 ]

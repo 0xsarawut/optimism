@@ -79,6 +79,24 @@
   },
   {
     "inputs": [],
+    "name": "gasPayingToken",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "addr_",
+        "type": "address"
+      },
+      {
+        "internalType": "uint8",
+        "name": "decimals_",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "gasPayingTokenName",
     "outputs": [
       {
@@ -87,7 +105,7 @@
         "type": "string"
       }
     ],
-    "stateMutability": "view",
+    "stateMutability": "pure",
     "type": "function"
   },
   {
@@ -100,7 +118,7 @@
         "type": "string"
       }
     ],
-    "stateMutability": "view",
+    "stateMutability": "pure",
     "type": "function"
   },
   {
@@ -122,11 +140,11 @@
     "outputs": [
       {
         "internalType": "bool",
-        "name": "isCustom_",
+        "name": "is_",
         "type": "bool"
       }
     ],
-    "stateMutability": "view",
+    "stateMutability": "pure",
     "type": "function"
   },
   {
@@ -205,13 +223,6 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "setCustomGasToken",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
