@@ -291,7 +291,10 @@ contract OPContractsManager_Upgrade_Harness is CommonTest {
         assertEq(systemConfig.l2ChainId(), l2ChainId);
         DeployUtils.assertInitialized({ _contractAddress: address(systemConfig), _isProxy: true, _slot: 0, _offset: 0 });
 
-        // Make sure that the OptimismPortal is upgraded correctly.
+        // Make sure that the OptimismPortal is upgraded to the right version. It must also have a
+        // reference to the new AnchorStateRegistry.
+        assertEq(ISemver(address(optimismPortal2)).version(), "4.7.0");
+        assertEq(impls.optimismPortalImpl, EIP1967Helper.getImplementation(address(optimismPortal2)));
         assertEq(address(optimismPortal2.anchorStateRegistry()), address(asr));
         DeployUtils.assertInitialized({
             _contractAddress: address(optimismPortal2),
