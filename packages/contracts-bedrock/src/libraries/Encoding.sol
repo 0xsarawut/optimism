@@ -205,7 +205,7 @@ library Encoding {
         uint256 _blobBaseFee,
         bytes32 _hash,
         bytes32 _batcherHash,
-        uint32 _operatorFeeScalar,
+        uint64 _operatorFeeScalar,
         uint64 _operatorFeeConstant
     )
         internal

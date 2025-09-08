@@ -234,7 +234,7 @@ type GasPriceOracleDeployConfig struct {
 	// GasPriceOracleBlobBaseFeeScalar represents the value of the blob base fee scalar used for fee calculations.
 	GasPriceOracleBlobBaseFeeScalar uint32 `json:"gasPriceOracleBlobBaseFeeScalar" evm:"blobbasefeeScalar"`
 	// GasPriceOracleOperatorFeeScalar represents the value of the operator fee scalar used for fee calculations.
-	GasPriceOracleOperatorFeeScalar uint32 `json:"gasPriceOracleOperatorFeeScalar" evm:"operatorfeeScalar"`
+	GasPriceOracleOperatorFeeScalar uint64 `json:"gasPriceOracleOperatorFeeScalar" evm:"operatorfeeScalar"`
 	// GasPriceOracleOperatorFeeConstant represents the value of the operator fee constant used for fee calculations.
 	GasPriceOracleOperatorFeeConstant uint64 `json:"gasPriceOracleOperatorFeeConstant" evm:"operatorfeeConstant"`
 }

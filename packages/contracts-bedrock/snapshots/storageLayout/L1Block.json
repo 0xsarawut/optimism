@@ -84,10 +84,10 @@
     "type": "uint64"
   },
   {
-    "bytes": "4",
+    "bytes": "8",
     "label": "operatorFeeScalar",
     "offset": 8,
     "slot": "8",
-    "type": "uint32"
+    "type": "uint64"
   }
 ]

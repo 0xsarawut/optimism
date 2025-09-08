@@ -23,8 +23,8 @@ const (
 	L1InfoFuncIsthmusSignature = "setL1BlockValuesIsthmus()"
 	L1InfoArguments            = 8
 	L1InfoBedrockLen           = 4 + 32*L1InfoArguments
-	L1InfoEcotoneLen           = 4 + 32*5         // after Ecotone upgrade, args are packed into 5 32-byte slots
-	L1InfoIsthmusLen           = 4 + 32*5 + 4 + 8 // after Isthmus upgrade, additionally pack in operator fee scalar and constant
+    L1InfoEcotoneLen           = 4 + 32*5          // after Ecotone upgrade, args are packed into 5 32-byte slots
+    L1InfoIsthmusLen           = 4 + 32*5 + 8 + 8  // after Isthmus upgrade, additionally pack in operator fee scalar and constant
 )
 
 var (
@@ -60,8 +60,8 @@ type L1BlockInfo struct {
 	BaseFeeScalar     uint32   // added by Ecotone upgrade
 	BlobBaseFeeScalar uint32   // added by Ecotone upgrade
 
-	OperatorFeeScalar   uint32 // added by Isthmus upgrade
-	OperatorFeeConstant uint64 // added by Isthmus upgrade
+    OperatorFeeScalar   uint64 // added by Isthmus upgrade
+    OperatorFeeConstant uint64 // added by Isthmus upgrade
 }
 
 // Bedrock Binary Format
@@ -265,7 +265,7 @@ func (info *L1BlockInfo) unmarshalBinaryEcotone(data []byte) error {
 // | 32      | BlobBaseFee              |
 // | 32      | BlockHash                |
 // | 32      | BatcherHash              |
-// | 4       | OperatorFeeScalar        |
+// | 8       | OperatorFeeScalar        |
 // | 8       | OperatorFeeConstant      |
 // +---------+--------------------------+
 

@@ -15,7 +15,7 @@ import (
 
 type TestParams struct {
 	ID                  string
-	OperatorFeeScalar   uint32
+	OperatorFeeScalar   uint64
 	OperatorFeeConstant uint64
 	L1BaseFeeScalar     uint32
 	L1BlobBaseFeeScalar uint32
@@ -94,7 +94,7 @@ func UpdateFeeParams(systemConfig *bindings.SystemConfig, systemConfigAddress co
 
 // UpdateOperatorFeeParams updates the operator fee parameters in the SystemConfig contract.
 // It constructs and sends a transaction using txplan and returns the signed transaction, the receipt, or an error.
-func UpdateOperatorFeeParams(systemConfig *bindings.SystemConfig, systemConfigAddress common.Address, l2L1BlockContract *bindings.L1Block, wallet *dsl.EOA, operatorFeeConstant uint64, operatorFeeScalar uint32) (receipt *gethTypes.Receipt, err error) {
+func UpdateOperatorFeeParams(systemConfig *bindings.SystemConfig, systemConfigAddress common.Address, l2L1BlockContract *bindings.L1Block, wallet *dsl.EOA, operatorFeeConstant uint64, operatorFeeScalar uint64) (receipt *gethTypes.Receipt, err error) {
 	return nil, fmt.Errorf("not implemented for op-devstack - utility function not used by tests")
 }
 

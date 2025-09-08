@@ -45,7 +45,7 @@ func Test_ProgramAction_OperatorFeeConsistency(gt *testing.T) {
 		t := actionsHelpers.NewDefaultTesting(gt)
 		deployConfigOverrides := func(dp *genesis.DeployConfig) {}
 
-		var testOperatorFeeScalar uint32
+		var testOperatorFeeScalar uint64
 		var testOperatorFeeConstant uint64
 		if testCfg.Custom == NotEnoughFundsInBatchMissingOpFee {
 			testOperatorFeeScalar = 0
@@ -293,18 +293,18 @@ func Test_ProgramAction_OperatorFeeConsistency(gt *testing.T) {
 			require.Equal(t, operatorFeeVaultInitialBalance, operatorFeeVaultFinalBalance)
 		} else if env.Sd.RollupCfg.IsIsthmus(l2UnsafeHead.Time) {
 			// Check that the operator fee was applied
-			require.Equal(t, testOperatorFeeScalar, uint32(*receipt.OperatorFeeScalar))
+			require.Equal(t, testOperatorFeeScalar, *receipt.OperatorFeeScalar)
 			require.Equal(t, testOperatorFeeConstant, *receipt.OperatorFeeConstant)
 
 			// Check that the operator fee sent to the vault is correct
 			require.Equal(t,
 				new(big.Int).Add(
-					new(big.Int).Div(
+					new(big.Int).Mul(
 						new(big.Int).Mul(
 							new(big.Int).SetUint64(receipt.GasUsed),
-							new(big.Int).SetUint64(uint64(testOperatorFeeScalar)),
+							new(big.Int).SetUint64(testOperatorFeeScalar),
 						),
-						new(big.Int).SetUint64(1e6),
+						big.NewInt(100),
 					),
 					new(big.Int).SetUint64(testOperatorFeeConstant),
 				),

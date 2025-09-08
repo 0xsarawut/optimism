@@ -277,16 +277,16 @@ func testFees(t *testing.T, cfg e2esys.SystemConfig) {
 			new(big.Float).SetInt(receipt.L1Fee), "fee field in receipt matches gas used times scalar times base fee")
 	}
 
-	expectedOperatorFee := new(big.Int).Add(
-		new(big.Int).Div(
-			new(big.Int).Mul(
-				gasUsed,
-				new(big.Int).SetUint64(uint64(cfg.DeployConfig.GasPriceOracleOperatorFeeScalar)),
-			),
-			new(big.Int).SetUint64(uint64(1e6)),
-		),
-		new(big.Int).SetUint64(cfg.DeployConfig.GasPriceOracleOperatorFeeConstant),
-	)
+    expectedOperatorFee := new(big.Int).Add(
+        new(big.Int).Mul(
+            new(big.Int).Mul(
+                gasUsed,
+                new(big.Int).SetUint64(cfg.DeployConfig.GasPriceOracleOperatorFeeScalar),
+            ),
+            big.NewInt(100),
+        ),
+        new(big.Int).SetUint64(cfg.DeployConfig.GasPriceOracleOperatorFeeConstant),
+    )
 
 	if sys.RollupConfig.IsIsthmus(header.Time) {
 		require.True(t, expectedOperatorFee.Cmp(operatorFee.ToBig()) == 0,
@@ -297,10 +297,10 @@ func testFees(t *testing.T, cfg e2esys.SystemConfig) {
 			// if both operator fee params are 0, they aren't added to receipts.
 			require.Nil(t, receipt.OperatorFeeScalar, "operator fee constant in receipt is nil")
 			require.Nil(t, receipt.OperatorFeeConstant, "operator fee constant in receipt is nil")
-		} else {
-			require.Equal(t, cfg.DeployConfig.GasPriceOracleOperatorFeeScalar, uint32(*receipt.OperatorFeeScalar), "operator fee constant in receipt is correct")
-			require.Equal(t, cfg.DeployConfig.GasPriceOracleOperatorFeeConstant, *receipt.OperatorFeeConstant, "operator fee constant in receipt is correct")
-		}
+        } else {
+            require.Equal(t, cfg.DeployConfig.GasPriceOracleOperatorFeeScalar, *receipt.OperatorFeeScalar, "operator fee scalar in receipt is correct")
+            require.Equal(t, cfg.DeployConfig.GasPriceOracleOperatorFeeConstant, *receipt.OperatorFeeConstant, "operator fee constant in receipt is correct")
+        }
 	}
 
 	// Calculate total fee

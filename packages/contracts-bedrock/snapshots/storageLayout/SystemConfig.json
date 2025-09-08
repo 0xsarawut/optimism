@@ -98,16 +98,16 @@
     "type": "uint32"
   },
   {
-    "bytes": "4",
+    "bytes": "8",
     "label": "operatorFeeScalar",
     "offset": 8,
     "slot": "106",
-    "type": "uint32"
+    "type": "uint64"
   },
   {
     "bytes": "8",
     "label": "operatorFeeConstant",
-    "offset": 12,
+    "offset": 16,
     "slot": "106",
     "type": "uint64"
   },

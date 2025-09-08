@@ -22,7 +22,7 @@ type OperatorFee struct {
 	systemConfig bindings.SystemConfig
 	l1Block      bindings.L1Block
 
-	originalScalar   uint32
+	originalScalar   uint64
 	originalConstant uint64
 }
 
@@ -74,7 +74,7 @@ func (of *OperatorFee) GetSystemOwner() *EOA {
 	return NewKey(of.t, of.l2Network.Escape().Keys().Secret(systemOwnerKey)).User(of.l1Client)
 }
 
-func (of *OperatorFee) SetOperatorFee(scalar uint32, constant uint64) {
+func (of *OperatorFee) SetOperatorFee(scalar uint64, constant uint64) {
 	systemOwner := of.GetSystemOwner()
 
 	_, err := contractio.Write(
@@ -97,7 +97,7 @@ func (of *OperatorFee) WaitForL2SyncWithCurrentL1State() {
 	of.WaitForL2Sync(l1Scalar, l1Constant)
 }
 
-func (of *OperatorFee) WaitForL2Sync(expectedScalar uint32, expectedConstant uint64) {
+func (of *OperatorFee) WaitForL2Sync(expectedScalar uint64, expectedConstant uint64) {
 	of.require.Eventually(func() bool {
 		scalar, err := contractio.Read(of.l1Block.OperatorFeeScalar(), of.ctx)
 		if err != nil {
@@ -112,7 +112,7 @@ func (of *OperatorFee) WaitForL2Sync(expectedScalar uint32, expectedConstant uin
 	}, 2*time.Minute, 5*time.Second, "L2 operator fee parameters did not sync within 2 minutes")
 }
 
-func (of *OperatorFee) VerifyL2Config(expectedScalar uint32, expectedConstant uint64) {
+func (of *OperatorFee) VerifyL2Config(expectedScalar uint64, expectedConstant uint64) {
 	scalar, err := contractio.Read(of.l1Block.OperatorFeeScalar(), of.ctx)
 	of.require.NoError(err)
 	of.require.Equal(expectedScalar, scalar)
@@ -122,7 +122,7 @@ func (of *OperatorFee) VerifyL2Config(expectedScalar uint32, expectedConstant ui
 	of.require.Equal(expectedConstant, constant)
 }
 
-func (of *OperatorFee) ValidateTransactionFees(from *EOA, to *EOA, amount *big.Int, expectedScalar uint32, expectedConstant uint64) OperatorFeeValidationResult {
+func (of *OperatorFee) ValidateTransactionFees(from *EOA, to *EOA, amount *big.Int, expectedScalar uint64, expectedConstant uint64) OperatorFeeValidationResult {
 	vaultBefore, err := from.el.stackEL().EthClient().BalanceAt(of.ctx, predeploys.OperatorFeeVaultAddr, nil)
 	of.require.NoError(err)
 
@@ -140,9 +140,9 @@ func (of *OperatorFee) ValidateTransactionFees(from *EOA, to *EOA, amount *big.I
 	if expectedScalar == 0 && expectedConstant == 0 {
 		expectedOperatorFee = big.NewInt(0)
 	} else {
-		operatorFee := new(big.Int).Mul(big.NewInt(int64(receipt.GasUsed)), big.NewInt(int64(expectedScalar)))
-		operatorFee.Div(operatorFee, big.NewInt(1000000))
-		operatorFee.Add(operatorFee, big.NewInt(int64(expectedConstant)))
+		operatorFee := new(big.Int).Mul(new(big.Int).SetUint64(receipt.GasUsed), new(big.Int).SetUint64(expectedScalar))
+		operatorFee.Mul(operatorFee, big.NewInt(100))
+		operatorFee.Add(operatorFee, new(big.Int).SetUint64(expectedConstant))
 		expectedOperatorFee = operatorFee
 	}
 

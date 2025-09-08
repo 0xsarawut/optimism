@@ -124,7 +124,7 @@ contract SystemConfig is ProxyAdminOwnedBase, OwnableUpgradeable, Reinitializabl
     uint32 public eip1559Elasticity;
 
     /// @notice The operator fee scalar.
-    uint32 public operatorFeeScalar;
+    uint64 public operatorFeeScalar;
 
     /// @notice The operator fee constant.
     uint64 public operatorFeeConstant;
@@ -434,12 +434,12 @@ contract SystemConfig is ProxyAdminOwnedBase, OwnableUpgradeable, Reinitializabl
     /// @notice Updates the operator fee parameters. Can only be called by the owner.
     /// @param _operatorFeeScalar operator fee scalar.
     /// @param _operatorFeeConstant  operator fee constant.
-    function setOperatorFeeScalars(uint32 _operatorFeeScalar, uint64 _operatorFeeConstant) external onlyOwner {
+    function setOperatorFeeScalars(uint64 _operatorFeeScalar, uint64 _operatorFeeConstant) external onlyOwner {
         _setOperatorFeeScalars(_operatorFeeScalar, _operatorFeeConstant);
     }
 
     /// @notice Internal function for updating the operator fee parameters.
-    function _setOperatorFeeScalars(uint32 _operatorFeeScalar, uint64 _operatorFeeConstant) internal {
+    function _setOperatorFeeScalars(uint64 _operatorFeeScalar, uint64 _operatorFeeConstant) internal {
         operatorFeeScalar = _operatorFeeScalar;
         operatorFeeConstant = _operatorFeeConstant;
 

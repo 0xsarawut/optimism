@@ -204,9 +204,9 @@
     "name": "operatorFeeScalar",
     "outputs": [
       {
-        "internalType": "uint32",
+        "internalType": "uint64",
         "name": "",
-        "type": "uint32"
+        "type": "uint64"
       }
     ],
     "stateMutability": "view",

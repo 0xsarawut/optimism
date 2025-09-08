@@ -18,7 +18,7 @@ type L1Block struct {
 	L1FeeScalar         func() TypedCall[*big.Int]    `sol:"l1FeeScalar"`
 	BasefeeScalar       func() TypedCall[uint32]      `sol:"baseFeeScalar"`
 	BlobbasefeeScalar   func() TypedCall[uint32]      `sol:"blobBaseFeeScalar"`
-	OperatorFeeScalar   func() TypedCall[uint32]      `sol:"operatorFeeScalar"`
+    OperatorFeeScalar   func() TypedCall[uint64]      `sol:"operatorFeeScalar"`
 	OperatorFeeConstant func() TypedCall[uint64]      `sol:"operatorFeeConstant"`
 	BlobBaseFee         func() TypedCall[*big.Int]    `sol:"blobBaseFee"`
 	BlobBaseFeeScalar   func() TypedCall[uint32]      `sol:"blobBaseFeeScalar"`

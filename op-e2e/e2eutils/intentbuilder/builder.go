@@ -392,7 +392,7 @@ func (c *l2Configurator) WithEIP1559Elasticity(value uint64) {
 }
 
 func (c *l2Configurator) WithOperatorFeeScalar(value uint64) {
-	c.builder.intent.Chains[c.chainIndex].OperatorFeeScalar = uint32(value)
+    c.builder.intent.Chains[c.chainIndex].OperatorFeeScalar = value
 }
 
 func (c *l2Configurator) WithOperatorFeeConstant(value uint64) {

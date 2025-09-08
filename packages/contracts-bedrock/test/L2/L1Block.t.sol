@@ -223,7 +223,7 @@ contract L1Block_SetL1BlockValuesIsthmus_Test is L1Block_TestInit {
         uint256 blobBaseFee,
         bytes32 hash,
         bytes32 batcherHash,
-        uint32 operatorFeeScalar,
+        uint64 operatorFeeScalar,
         uint64 operatorFeeConstant
     )
         external
@@ -283,7 +283,7 @@ contract L1Block_SetL1BlockValuesIsthmus_Test is L1Block_TestInit {
             type(uint256).max,
             bytes32(type(uint256).max),
             bytes32(type(uint256).max),
-            type(uint32).max,
+            type(uint64).max,
             type(uint64).max
         );
 
@@ -304,7 +304,7 @@ contract L1Block_SetL1BlockValuesIsthmus_Test is L1Block_TestInit {
             type(uint256).max,
             bytes32(type(uint256).max),
             bytes32(type(uint256).max),
-            type(uint32).max,
+            type(uint64).max,
             type(uint64).max
         );
 

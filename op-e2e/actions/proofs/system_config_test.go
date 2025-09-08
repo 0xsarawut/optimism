@@ -31,7 +31,7 @@ func Test_ProgramAction_SystemConfigEarlyIsthmusUpgrade(gt *testing.T) {
 func testSystemConfigEarlyIsthmusUpgrade(gt *testing.T, testCfg *helpers.TestCfg[any]) {
 	const isthmusOffset = 24
 
-	testOperatorFeeScalar := uint32(20000)
+	testOperatorFeeScalar := uint64(20000)
 	testOperatorFeeConstant := uint64(500)
 
 	t := actionsHelpers.NewDefaultTesting(gt)
@@ -53,7 +53,7 @@ func testSystemConfigEarlyIsthmusUpgrade(gt *testing.T, testCfg *helpers.TestCfg
 	require.NoError(t, err)
 	require.GreaterOrEqual(t, ver.Major(), uint64(3), "expect Isthmus contracts or later")
 
-	opFeeScalarAndConstant := func() (uint32, uint64) {
+	opFeeScalarAndConstant := func() (uint64, uint64) {
 		t.Helper()
 		scalar, err := sysCfg.OperatorFeeScalar(opts)
 		require.NoError(t, err)
@@ -62,7 +62,7 @@ func testSystemConfigEarlyIsthmusUpgrade(gt *testing.T, testCfg *helpers.TestCfg
 		return scalar, constant
 	}
 
-	requireL1InfoParams := func(block eth.L2BlockRef, scalar uint32, constant uint64) {
+	requireL1InfoParams := func(block eth.L2BlockRef, scalar uint64, constant uint64) {
 		t.Helper()
 		l1infoTx := env.Engine.L2Chain().GetBlockByHash(block.Hash).Transactions()[0]
 		l1info, err := derive.L1BlockInfoFromBytes(env.Sd.RollupCfg, block.Time, l1infoTx.Data())

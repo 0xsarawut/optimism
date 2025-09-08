@@ -68,9 +68,9 @@ func TestEcotoneScalars(t *testing.T) {
 }
 
 func TestOperatorFeeScalars(t *testing.T) {
-	sysConfig := SystemConfig{OperatorFeeParams: Bytes32{0: 0, 20: 4, 29: 3}}
+	sysConfig := SystemConfig{OperatorFeeParams: Bytes32{20: 4, 29: 3}}
 	params := sysConfig.OperatorFee()
-	require.Equal(t, uint32(0x4000000), params.Scalar)
+	require.Equal(t, uint64(0x4000000), params.Scalar)
 	require.Equal(t, uint64(0x30000), params.Constant)
 }
 
@@ -85,7 +85,7 @@ func FuzzEncodeScalar(f *testing.F) {
 }
 
 func FuzzEncodeOperatorFeeParams(f *testing.F) {
-	f.Fuzz(func(t *testing.T, scalar uint32, constant uint64) {
+	f.Fuzz(func(t *testing.T, scalar uint64, constant uint64) {
 		encoded := EncodeOperatorFeeParams(OperatorFeeParams{Scalar: scalar, Constant: constant})
 		scalars := DecodeOperatorFeeParams(encoded)
 		require.Equal(t, scalar, scalars.Scalar)

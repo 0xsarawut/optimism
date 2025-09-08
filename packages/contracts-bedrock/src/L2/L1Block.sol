@@ -59,7 +59,7 @@ contract L1Block is ISemver {
     uint64 public operatorFeeConstant;
 
     /// @notice The scalar value applied to the operator fee.
-    uint32 public operatorFeeScalar;
+    uint64 public operatorFeeScalar;
 
     /// @custom:semver 1.6.1
     function version() public pure virtual returns (string memory) {
@@ -208,8 +208,8 @@ contract L1Block is ISemver {
     function _setL1BlockValuesIsthmus() internal {
         _setL1BlockValuesEcotone();
         assembly {
-            // operatorFeeScalar (uint32), operatorFeeConstant (uint64)
-            sstore(operatorFeeConstant.slot, shr(160, calldataload(164)))
+            // operatorFeeScalar (uint64), operatorFeeConstant (uint64)
+            sstore(operatorFeeConstant.slot, shr(128, calldataload(164)))
         }
     }
 }

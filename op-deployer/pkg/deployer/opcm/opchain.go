@@ -41,7 +41,7 @@ type DeployOPChainInput struct {
 	DisputeMaxClockDuration      uint64
 	AllowCustomDisputeParameters bool
 
-	OperatorFeeScalar   uint32
+	OperatorFeeScalar   uint64
 	OperatorFeeConstant uint64
 }
 
