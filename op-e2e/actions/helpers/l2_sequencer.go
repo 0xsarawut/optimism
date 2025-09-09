@@ -70,7 +70,7 @@ func NewL2Sequencer(t Testing, log log.Logger, l1 derive.L1Fetcher, blobSrc deri
 	conduc := &conductor.NoOpConductor{}
 	asyncGossip := async.NoOpGossiper{}
 	seq := sequencing.NewSequencer(t.Ctx(), log, cfg, attrBuilder, l1OriginSelector,
-		seqStateListener, conduc, asyncGossip, metr, ver.engine)
+		seqStateListener, conduc, asyncGossip, metr, ver.engine, eng)
 	opts := event.WithEmitLimiter(
 		// TestSyncBatchType/DerivationWithFlakyL1RPC does *a lot* of quick retries
 		// TestL2BatcherBatchType/ExtendedTimeWithoutL1Batches as well.
@@ -105,7 +105,7 @@ func (s *L2Sequencer) ActL2StartBlock(t Testing) {
 		return
 	}
 	s.synchronousEvents.Emit(t.Ctx(), sequencing.SequencerActionEvent{})
-	require.NoError(t, s.drainer.DrainUntil(event.Is[engine.BuildStartedEvent], false),
+	require.NoError(t, s.drainer.DrainUntil(event.Is[sequencing.BuildStartedEvent], false),
 		"failed to start block building")
 
 	s.l2Building = true

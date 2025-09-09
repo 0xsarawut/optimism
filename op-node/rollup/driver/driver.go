@@ -126,7 +126,7 @@ func NewDriver(
 		ec.SetOriginSelectorResetter(findL1Origin)
 
 		sequencer = sequencing.NewSequencer(driverCtx, log, cfg, attrBuilder, findL1Origin,
-			sequencerStateListener, sequencerConductor, asyncGossiper, metrics, ec)
+			sequencerStateListener, sequencerConductor, asyncGossiper, metrics, ec, l2)
 		sys.Register("sequencer", sequencer)
 	} else {
 		sequencer = sequencing.DisabledSequencer{}
