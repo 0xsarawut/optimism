@@ -544,6 +544,7 @@ func (p *publisher) BlocksTopicV4Peers() []peer.ID {
 }
 
 func (p *publisher) PublishSignedL2Payload(ctx context.Context, signedEnvelope *opsigner.SignedExecutionPayloadEnvelope) error {
+	p.log.Debug("anteva publishing signed l2 payload", "signedEnvelope", signedEnvelope)
 	res := msgBufPool.Get().(*[]byte)
 	buf := bytes.NewBuffer((*res)[:0])
 	defer func() {

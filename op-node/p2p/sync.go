@@ -370,6 +370,7 @@ func (s *SyncClient) Close() error {
 }
 
 func (s *SyncClient) RequestL2Range(ctx context.Context, start, end eth.L2BlockRef) (uint64, error) {
+	s.log.Debug("anteva reqres RequestL2Range", "start", start, "end", end)
 	if end == (eth.L2BlockRef{}) {
 		s.log.Debug("P2P sync client received range signal, but cannot sync open-ended chain: need sync target to verify blocks through parent-hashes", "start", start)
 		return 0, nil
@@ -435,7 +436,7 @@ func (s *SyncClient) isInFlight(ctx context.Context, num uint64) (bool, error) {
 // This function transforms requested block ranges into work for each peer.
 func (s *SyncClient) onRangeRequest(ctx context.Context, req rangeRequest) {
 	log := s.log.New("target", req.start, "end", req.end)
-	log.Info("processing L2 range request", "rangeReqId", req.id)
+	log.Info("anteva reqres processing L2 range request", "rangeReqId", req.id)
 
 	// add req head to trusted set of blocks
 	s.trusted.Add(req.end.Hash, struct{}{})
@@ -857,6 +858,7 @@ func (srv *ReqRespServer) HandleSyncRequest(ctx context.Context, log log.Logger,
 var errInvalidRequest = errors.New("invalid request")
 
 func (srv *ReqRespServer) handleSyncRequest(ctx context.Context, stream network.Stream) (uint64, error) {
+	log.Warn("anteva reqres handleSyncRequest")
 	peerId := stream.Conn().RemotePeer()
 
 	// take a token from the global rate-limiter,
