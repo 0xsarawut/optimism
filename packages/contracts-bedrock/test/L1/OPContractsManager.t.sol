@@ -171,7 +171,7 @@ contract OPContractsManager_Upgrade_Harness is CommonTest {
         emit Upgraded(impl);
     }
 
-    function runUpgrade16aUpgradeAndChecks(address _delegateCaller) public {
+    function runUpgrade16bUpgradeAndChecks(address _delegateCaller) public {
         IOPContractsManager.Implementations memory impls = opcm.implementations();
 
         // Always trigger U16a firstly by calling upgradeSuperchainConfig to ensure that the
@@ -304,10 +304,10 @@ contract OPContractsManager_Upgrade_Harness is CommonTest {
         });
 
         if (opcm.isDevFeatureEnabled(DevFeatures.OPTIMISM_PORTAL_INTEROP)) {
-            assertEq(ISemver(address(optimismPortal2)).version(), "5.0.0+interop");
+            assertEq(ISemver(address(optimismPortal2)).version(), "5.1.0+interop");
             assertEq(impls.optimismPortalInteropImpl, EIP1967Helper.getImplementation(address(optimismPortal2)));
         } else {
-            assertEq(ISemver(address(optimismPortal2)).version(), "5.0.0");
+            assertEq(ISemver(address(optimismPortal2)).version(), "5.1.0");
             assertEq(impls.optimismPortalImpl, EIP1967Helper.getImplementation(address(optimismPortal2)));
         }
 
@@ -319,7 +319,7 @@ contract OPContractsManager_Upgrade_Harness is CommonTest {
     }
 
     function runUpgradeTestAndChecks(address _delegateCaller) public {
-        runUpgrade16aUpgradeAndChecks(_delegateCaller);
+        runUpgrade16bUpgradeAndChecks(_delegateCaller);
     }
 }
 
@@ -1042,7 +1042,7 @@ contract OPContractsManager_Upgrade_Test is OPContractsManager_Upgrade_Harness {
         opChainConfigs[0].absolutePrestate = Claim.wrap(bytes32(uint256(1)));
 
         // Now run Upgrade 16a.
-        runUpgrade16aUpgradeAndChecks(upgrader);
+        runUpgrade16bUpgradeAndChecks(upgrader);
 
         // Get the absolute prestate after the upgrade
         Claim pdgPrestateAfter = IPermissionedDisputeGame(
@@ -1074,7 +1074,7 @@ contract OPContractsManager_Upgrade_Test is OPContractsManager_Upgrade_Harness {
         opChainConfigs[0].absolutePrestate = Claim.wrap(bytes32(0));
 
         // Now run Upgrade 16a.
-        runUpgrade16aUpgradeAndChecks(upgrader);
+        runUpgrade16bUpgradeAndChecks(upgrader);
 
         // Get the absolute prestate after the upgrade
         Claim pdgPrestateAfter = IPermissionedDisputeGame(
