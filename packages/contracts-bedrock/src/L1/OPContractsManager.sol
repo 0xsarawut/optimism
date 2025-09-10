@@ -1187,7 +1187,7 @@ contract OPContractsManagerDeployer is OPContractsManagerBase {
 
         // If the custom gas token feature was requested, enable the custom gas token feature in the SystemConfig
         // contract.
-        if (_input.isCustomGasToken) {
+        if (_input.useCustomGasToken) {
             output.systemConfigProxy.setFeature(Features.CUSTOM_GAS_TOKEN, true);
         }
 
@@ -1354,9 +1354,7 @@ contract OPContractsManagerDeployer is OPContractsManagerBase {
     }
 
     /// @notice Helper method for encoding the OptimismPortal initializer data.
-    function encodeOptimismPortalInitializer(
-        OPContractsManager.DeployOutput memory _output
-    )
+    function encodeOptimismPortalInitializer(OPContractsManager.DeployOutput memory _output)
         internal
         view
         virtual
@@ -1819,7 +1817,7 @@ contract OPContractsManager is ISemver {
         uint32 basefeeScalar;
         uint32 blobBasefeeScalar;
         uint256 l2ChainId;
-        bool isCustomGasToken;
+        bool useCustomGasToken;
         // The correct type is Proposal memory but OP Deployer does not yet support structs.
         bytes startingAnchorRoot;
         // The salt mixer is used as part of making the resulting salt unique.
