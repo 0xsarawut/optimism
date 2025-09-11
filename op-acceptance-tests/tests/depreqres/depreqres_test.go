@@ -7,6 +7,7 @@ import (
 	"github.com/ethereum-optimism/optimism/op-devstack/devtest"
 	"github.com/ethereum-optimism/optimism/op-devstack/dsl"
 	"github.com/ethereum-optimism/optimism/op-devstack/presets"
+	"github.com/ethereum-optimism/optimism/op-node/node"
 	"github.com/ethereum-optimism/optimism/op-service/eth"
 	"github.com/ethereum-optimism/optimism/op-supervisor/supervisor/types"
 )
@@ -30,11 +31,15 @@ func TestDeprecateReqResCLSync(gt *testing.T) {
 		sys.L2CLB.AdvancedFn(types.LocalUnsafe, target, 30),
 	)
 
-	l.Info("anteva stopping L2CL2")
+	l.Info("anteva stopping L2 batcher")
 	sys.L2Batcher.Stop()
-	sys.L2CLB.Stop()
-	sys.L2ELB.Stop()
-	l.Info("anteva stopped L2CL2")
+
+	node.P2pTemporarilyDisabled.Store(true)
+
+	// l.Info("anteva stopping L2CL2")
+	// sys.L2CLB.Stop()
+	// sys.L2ELB.Stop()
+	l.Info("anteva stopped p2p gossip temporarily")
 
 	unsafeAfterStopped := sys.L2CL.SyncStatus().UnsafeL2.ID()
 
@@ -44,13 +49,15 @@ func TestDeprecateReqResCLSync(gt *testing.T) {
 
 	l.Info("anteva blocks to sync", "after_stopped", unsafeAfterStopped, "before_started", unsafeBeforeStarted)
 
-	l.Info("anteva starting L2CLB")
-	sys.L2ELB.Start()
-	l.Info("anteva started L2ELB")
-	sys.L2CLB.Start()
-	l.Info("anteva started L2CLB")
-	sys.L2ELB.PeerWith(sys.L2EL)
-	l.Info("anteva L2ELB peered with L2EL")
+	l.Info("anteva starting p2p gossip")
+	node.P2pTemporarilyDisabled.Store(false)
+	// l.Info("anteva starting L2CLB")
+	// sys.L2ELB.Start()
+	// l.Info("anteva started L2ELB")
+	// sys.L2CLB.Start()
+	// l.Info("anteva started L2CLB")
+	// sys.L2ELB.PeerWith(sys.L2EL)
+	// l.Info("anteva L2ELB peered with L2EL")
 
 	unsafeTargetId := sys.L2CL.SyncStatus().UnsafeL2.ID()
 	safeTargetId := sys.L2CL.SyncStatus().SafeL2.ID()

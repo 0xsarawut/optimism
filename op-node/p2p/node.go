@@ -132,6 +132,7 @@ func (n *NodeP2P) init(
 	}
 	// Activate the P2P req-resp sync if enabled by feature-flag.
 	if setup.ReqRespSyncEnabled() && !elSyncEnabled {
+		n.log.Info("anteva starting p2p req-resp sync", "elSyncEnabled", elSyncEnabled, "setup.ReqRespSyncEnabled()", setup.ReqRespSyncEnabled())
 		n.syncCl = NewSyncClient(log, rollupCfg, n.host, gossipIn.OnUnsafeL2Payload, metrics, n.appScorer)
 		n.host.Network().Notify(&network.NotifyBundle{
 			ConnectedF: func(nw network.Network, conn network.Conn) {

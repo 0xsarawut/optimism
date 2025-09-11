@@ -2,6 +2,7 @@ package p2p
 
 import (
 	"context"
+	"sync/atomic"
 
 	"github.com/libp2p/go-libp2p/core/peer"
 
@@ -32,20 +33,30 @@ type BlockReceiver struct {
 	syncDeriver SyncDeriver
 	// Tracer embedded for tracing unsafe payload
 	tracer Tracer
+
+	temporarilyDisabled *atomic.Bool
 }
 
 var _ GossipIn = (*BlockReceiver)(nil)
 
-func NewBlockReceiver(log log.Logger, metrics BlockReceiverMetrics, syncDeriver SyncDeriver, tracer Tracer) *BlockReceiver {
+func NewBlockReceiver(log log.Logger, metrics BlockReceiverMetrics, syncDeriver SyncDeriver, tracer Tracer, temporarilyDisabled *atomic.Bool) *BlockReceiver {
 	return &BlockReceiver{
-		log:         log,
-		metrics:     metrics,
-		syncDeriver: syncDeriver,
-		tracer:      tracer,
+		log:                 log,
+		metrics:             metrics,
+		syncDeriver:         syncDeriver,
+		tracer:              tracer,
+		temporarilyDisabled: temporarilyDisabled,
 	}
 }
 
 func (g *BlockReceiver) OnUnsafeL2Payload(ctx context.Context, from peer.ID, msg *eth.ExecutionPayloadEnvelope) error {
+	if g.temporarilyDisabled.Load() {
+		g.log.Debug("Received signed execution payload from p2p, but temporarily disabled",
+			"id", msg.ExecutionPayload.ID(),
+			"peer", from, "txs", len(msg.ExecutionPayload.Transactions))
+		return nil
+	}
+
 	g.log.Debug("Received signed execution payload from p2p",
 		"id", msg.ExecutionPayload.ID(),
 		"peer", from, "txs", len(msg.ExecutionPayload.Transactions))
